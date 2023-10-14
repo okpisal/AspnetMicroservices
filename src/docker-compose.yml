@@ -6,7 +6,7 @@ services:
   basketdb:
     image: redis:alpine
   discountdb:
-    image: postgres
+    image: postgres:latest
   pgadmin:
     image: dpage/pgadmin4
   portainer:
