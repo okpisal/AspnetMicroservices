@@ -39,12 +39,7 @@ services:
     ports : 
       - "1433:1433"
   
-  rabbitmq:
-    container_name : rabbitmq
-    restart : always
-    port : 
-      - "5672:5672"
-      - "15672:15672" 
+ 
   pgadmin:
     container_name: pgadmin
     environment:
