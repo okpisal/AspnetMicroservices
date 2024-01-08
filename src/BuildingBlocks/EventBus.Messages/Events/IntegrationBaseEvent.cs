@@ -8,20 +8,19 @@ namespace EventBus.Messages.Events
 {
     public class IntegrationBaseEvent
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
-        public DateTime CreationDate { get; private set; }
+        public DateTime CreationDate { get; set; }
 
         public IntegrationBaseEvent()
         {
                 Id = Guid.NewGuid();
-                CreationDate = DateTime.UtcNow;
+                CreationDate = DateTime.Now;
         }
-        public IntegrationBaseEvent(Guid id,DateTime createdDate)
+        public IntegrationBaseEvent(Guid Id,DateTime createDate)
         {
-            Id = id;
-            CreationDate = createdDate;
+            this.Id = Id;
+            this.CreationDate = createDate;
         }
     }
-
 }

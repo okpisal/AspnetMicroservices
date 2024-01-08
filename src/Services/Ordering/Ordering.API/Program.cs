@@ -2,7 +2,9 @@ using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Persistence;
 using Ordering.API.Extensions;
-
+using MassTransit;
+using Ordering.API.EventBusConsumer;
+using EventBus.Messages.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,25 @@ builder.MigrationDatabase<OrderContext>((context, services) =>
     var logger = services.GetService<ILogger<OrderContextSeed>>();
     OrderContextSeed.SeedAsync(context, logger).Wait();
 });
+
+//Rabitmq message configuration
+builder.Services.AddMassTransit((config) =>
+{
+    config.AddConsumer<BasketCheckoutConsumer>();
+    config.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host(builder.Configuration.GetValue<string>("EventBusSettings:HostAdress"));
+
+        cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c => {
+            c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
+        });
+    });
+});
+
+//Genral Configuration
+builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddScoped<BasketCheckoutConsumer>();
 
 var app = builder.Build();
 

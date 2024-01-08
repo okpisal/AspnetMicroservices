@@ -26,43 +26,53 @@ namespace Ordering.Infrastructure.Mail
 
         public async Task<bool> SendEmailAsync(Email email)
         {
-            try
+            var testapp = true;
+            if (!testapp)
             {
 
             
-            var client = new SendGridClient(_emailSettings.ApiKey);
 
-            var subject = email.Subject;
-            var to=new EmailAddress(email.To);
-            var emailBody=email.Body;
-
-            var from = new EmailAddress
-            {
-                Email = _emailSettings.FromAddress,
-                Name = _emailSettings.FromName
-
-            };
-
-            var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, emailBody, emailBody);
-
-            var response=await client.SendEmailAsync(sendGridMessage);
-
-            _logger.LogInformation("Email sent.");
-
-                if(response.StatusCode==System.Net.HttpStatusCode.Accepted || response.StatusCode==System.Net.HttpStatusCode.OK) {
-                return true;
-                }
-                else
+                try
                 {
-                    _logger.LogError("Email Sending failed");
-                    return false;
+
+
+                    var client = new SendGridClient(_emailSettings.ApiKey);
+
+                    var subject = email.Subject;
+                    var to = new EmailAddress(email.To);
+                    var emailBody = email.Body;
+
+                    var from = new EmailAddress
+                    {
+                        Email = _emailSettings.FromAddress,
+                        Name = _emailSettings.FromName
+
+                    };
+
+                    var sendGridMessage = MailHelper.CreateSingleEmail(from, to, subject, emailBody, emailBody);
+
+                    var response = await client.SendEmailAsync(sendGridMessage);
+
+                    _logger.LogInformation("Email sent.");
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Accepted || response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        _logger.LogError("Email Sending failed");
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("Email Failed : " + ex.Message);
+                    throw new Exception(ex.Message);
                 }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError("Email Failed : "+ex.Message);
-                throw new Exception(ex.Message);
-            }
+            return testapp;
         }
+        
     }
 }
