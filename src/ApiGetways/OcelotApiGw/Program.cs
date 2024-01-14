@@ -3,7 +3,7 @@ using Ocelot.Middleware;
 using Ocelot.Cache.CacheManager;
 
 var builder = WebApplication.CreateBuilder(args);
-//loggin configuration
+//loggin configuration section 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
@@ -18,7 +18,7 @@ builder.Services.AddOcelot().AddCacheManager(settings=>settings.WithDictionaryHa
 var app = builder.Build();
 
 await app.UseOcelot();
-//app.MapGet("/", () => "Hello API GetWay!");
+//app.MapGet("/", () => "Hello API GetWay!"); 
 app.UseRouting();
 
 app.UseEndpoints(endpoints =>
