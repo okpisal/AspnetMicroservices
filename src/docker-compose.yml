@@ -50,12 +50,19 @@ services:
       context: .
       dockerfile: ApiGetways/OcelotApiGw/Dockerfile
 
+  shopping.aggregator:
+    image: ${DOCKER_REGISTRY-}shoppingaggregator
+    build:
+      context: .
+      dockerfile: ApiGetways/Shopping.Aggregator/Dockerfile
+
 volumes:
   mongo_data:
   portainer_data:
   postgres_data:
   pgadmin_data:
   #pass:admin1234567
+
 
 
 

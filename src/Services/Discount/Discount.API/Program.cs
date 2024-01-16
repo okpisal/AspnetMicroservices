@@ -1,5 +1,6 @@
 using Discount.API.Extensions;
 using Discount.API.Repositories;
+using Microsoft.OpenApi.Models;
 using System.Runtime.CompilerServices;
 
 internal class Program
@@ -14,7 +15,10 @@ internal class Program
        
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Discount.API", Version = "v1" });
+        });
         builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
         var app = builder.Build();
         
